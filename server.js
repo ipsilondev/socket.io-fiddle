@@ -12,6 +12,17 @@ server.listen(port, () => console.log('server listening on port ' + port));
 
 function onConnect(socket){
   console.log('connect ' + socket.id);
+  socket.on("req", (o) => {
+	 //disabling compression solves the problem
+	 //socket.compression(false);
+	 //all this combination produce a memory leak 
+	 socket.emit('res', Buffer.allocUnsafe(35000)); 
+	 //socket.emit('res', Buffer.allocUnsafe(10000).toString()); 
+	 
+	 //this does NOT produce a memory leak
+	 //socket.emit('res', Buffer.alloc(35000)); 
+	 //socket.emit('res', Buffer.allocUnsafe(25000)); 
+  });
 
   socket.on('disconnect', () => console.log('disconnect ' + socket.id));
 }

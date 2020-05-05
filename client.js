@@ -5,4 +5,11 @@ socket.on('connect', onConnect);
 
 function onConnect(){
   console.log('connect ' + socket.id);
+			sendReq();	
+
 }
+function sendReq() {
+			socket.emit("req", {});
+			setTimeout(sendReq, 0.3);
+}
+
